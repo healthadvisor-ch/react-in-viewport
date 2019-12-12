@@ -28,6 +28,24 @@ For browser not supporting the API, we will load a polyfill.
 
 [Browser support table](https://caniuse.com/#feat=intersectionobserver)
 
+### Difference with original react-in-viewport lib
+
+This fork adds possibility to define `IntersectionObserver`'s options' `root` prop to be a function, which returns a node shortly before creating
+new instance of `IntersectionObserver`. The reason behind is that if your root might disappear from DOM for any reason, current solution doesn't
+handle that and might happen that the observer doesn't react on changing viewport. 
+
+Usage:
+
+```javascript
+import HandleViewport from '@rspective/react-in-viewport';
+
+...
+
+HandleViewport(MyComponent, {
+    root: () => document.getElementById('my-element'),
+});
+```
+
 ## Design
 
 This component use higher order component (HOC) as a wrapper and attach intersection observer to your target component. The HOC will then pass down extra props indicating viewport information along with executing callback function when component entering and leaving viewport.
@@ -77,7 +95,7 @@ _NOTE_: Stateless: Need to add `ref={this.props.innerRef}` on your component
 #### Example of functional component
 
 ```javascript
-import handleViewport from 'react-in-viewport';
+import handleViewport from '@rspective/react-in-viewport';
 
 const Block = (props: { inViewport: boolean }) => {
   const { inViewport, innerRef } = props;
@@ -100,7 +118,7 @@ const Component = (props) => (
     </div>
     <ViewportBlock onEnterViewport={() => console.log('enter')} onLeaveViewport={() => console.log('leave')} />
   </div>
-))
+);
 ```
 
 #### Example for enter/leave counts
@@ -110,7 +128,7 @@ const Component = (props) => (
 
 ```javascript
 import React, { Component } from 'react';
-import handleViewport from 'react-in-viewport';
+import handleViewport from '@rspective/react-in-viewport';
 
 class MySectionBlock extends Component {
   getStyle() {
@@ -128,7 +146,7 @@ class MySectionBlock extends Component {
   render() {
     const { enterCount, leaveCount } = this.props;
     return (
-      <div className="content" style={this.getStyle() ref={innerRef}>
+      <div className="content" style={this.getStyle()} ref={innerRef}>
         <h1>Hello</h1>
         <p>{`Enter viewport: ${enterCount} times`}</p>
         <p>{`Leave viewport: ${leaveCount} times`}</p>
