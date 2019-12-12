@@ -1,185 +1,173 @@
-"use strict";
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-exports.__esModule = true;
-exports.default = void 0;
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-var _react = _interopRequireWildcard(require("react"));
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _reactDom = require("react-dom");
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-var _hoistNonReactStatics = _interopRequireDefault(require("hoist-non-react-statics"));
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+import React, { Component } from 'react';
+import { findDOMNode } from 'react-dom';
+import hoistNonReactStatic from 'hoist-non-react-statics';
 
 if (typeof window !== 'undefined') {
   // Polyfills for intersection-observer
   require('intersection-observer'); // eslint-disable-line
-
 }
 
-var isStateless = TargetComponent => typeof TargetComponent === 'function' && !(TargetComponent.prototype && TargetComponent.prototype.isReactComponent);
+var isStateless = function isStateless(TargetComponent) {
+  return typeof TargetComponent === 'function' && !(TargetComponent.prototype && TargetComponent.prototype.isReactComponent);
+};
 
-function handleViewport(TargetComponent, options, config) {
-  if (options === void 0) {
-    options = {};
-  }
+function handleViewport(TargetComponent) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : { disconnectOnLeave: false };
 
-  if (config === void 0) {
-    config = {
-      disconnectOnLeave: false
-    };
-  }
+  var InViewport = function (_Component) {
+    _inherits(InViewport, _Component);
 
-  class InViewport extends _react.Component {
-    constructor(props) {
-      super(props);
-      this.observer = null;
-      this.node = null;
-      this.state = {
+    function InViewport(props) {
+      _classCallCheck(this, InViewport);
+
+      var _this = _possibleConstructorReturn(this, _Component.call(this, props));
+
+      _this.observer = null;
+      _this.node = null;
+      _this.state = {
         inViewport: false,
         enterCount: 0,
         leaveCount: 0
       };
-      this.intersected = false;
-      this.handleIntersection = this.handleIntersection.bind(this);
-      this.initIntersectionObserver = this.initIntersectionObserver.bind(this);
-      this.setInnerRef = this.setInnerRef.bind(this);
-      this.setRef = this.setRef.bind(this);
+      _this.intersected = false;
+      _this.handleIntersection = _this.handleIntersection.bind(_this);
+      _this.initIntersectionObserver = _this.initIntersectionObserver.bind(_this);
+      _this.setInnerRef = _this.setInnerRef.bind(_this);
+      _this.setRef = _this.setRef.bind(_this);
+      return _this;
     }
 
-    componentDidMount() {
+    InViewport.prototype.componentDidMount = function componentDidMount() {
       // https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
       this.initIntersectionObserver();
       this.startObserver(this.node, this.observer);
-    }
+    };
 
-    componentDidUpdate(prevProps, prevState) {
+    InViewport.prototype.componentDidUpdate = function componentDidUpdate(prevProps, prevState) {
       // reset observer on update, to fix race condition that when observer init,
       // the element is not in viewport, such as in animation
       if (!this.intersected && !prevState.inViewport) {
         if (this.observer && this.node) {
           this.observer.unobserve(this.node); // $FlowFixMe
-
           this.observer.observe(this.node);
         }
       }
-    }
+    };
 
-    initIntersectionObserver() {
+    InViewport.prototype.initIntersectionObserver = function initIntersectionObserver() {
       if (!this.observer) {
-        var root = typeof options.root === 'function' ? options.root() : options.root; // $FlowFixMe
-
-        this.observer = new IntersectionObserver(this.handleIntersection, _extends({}, options, {
-          root
-        }));
+        var root = typeof options.root === 'function' ? options.root() : options.root;
+        // $FlowFixMe
+        this.observer = new IntersectionObserver(this.handleIntersection, Object.assign({}, options, { root: root }));
       }
-    }
+    };
 
-    componentWillUnmount() {
+    InViewport.prototype.componentWillUnmount = function componentWillUnmount() {
       this.stopObserver(this.node, this.observer);
-    }
+    };
 
-    startObserver(node, observer) {
+    InViewport.prototype.startObserver = function startObserver(node, observer) {
       if (node && observer) {
         observer.observe(node);
       }
-    }
+    };
 
-    stopObserver(node, observer) {
+    InViewport.prototype.stopObserver = function stopObserver(node, observer) {
       if (node && observer) {
         observer.unobserve(node);
         observer.disconnect();
         this.observer = null;
       }
-    }
+    };
 
-    handleIntersection(entries) {
-      var {
-        onEnterViewport,
-        onLeaveViewport
-      } = this.props;
+    InViewport.prototype.handleIntersection = function handleIntersection(entries) {
+      var _props = this.props,
+        onEnterViewport = _props.onEnterViewport,
+        onLeaveViewport = _props.onLeaveViewport;
+
       var entry = entries[0] || {};
-      var {
-        isIntersecting,
-        intersectionRatio
-      } = entry;
-      var inViewport = typeof isIntersecting !== 'undefined' ? isIntersecting : intersectionRatio > 0; // enter
+      var isIntersecting = entry.isIntersecting,
+        intersectionRatio = entry.intersectionRatio;
 
+      var inViewport = typeof isIntersecting !== 'undefined' ? isIntersecting : intersectionRatio > 0;
+
+      // enter
       if (!this.intersected && inViewport) {
         this.intersected = true;
         onEnterViewport && onEnterViewport();
         this.setState({
-          inViewport,
+          inViewport: inViewport,
           enterCount: this.state.enterCount + 1
         });
         return;
-      } // leave
+      }
 
-
+      // leave
       if (this.intersected && !inViewport) {
         this.intersected = false;
         onLeaveViewport && onLeaveViewport();
-
         if (config.disconnectOnLeave) {
           // disconnect obsever on leave
           this.observer && this.observer.disconnect();
         }
-
         this.setState({
-          inViewport,
+          inViewport: inViewport,
           leaveCount: this.state.leaveCount + 1
         });
       }
-    }
+    };
 
-    setRef(node) {
+    InViewport.prototype.setRef = function setRef(node) {
       // $FlowFixMe
-      this.node = (0, _reactDom.findDOMNode)(node);
-    }
+      this.node = findDOMNode(node);
+    };
 
-    setInnerRef(node) {
+    InViewport.prototype.setInnerRef = function setInnerRef(node) {
       if (node && !this.node) {
         // handle stateless
         this.node = node;
       }
-    }
+    };
 
-    render() {
-      var _this$props = this.props,
-          otherProps = _objectWithoutPropertiesLoose(_this$props, ["onEnterViewport", "onLeaveViewport"]); // pass ref to class and innerRef for stateless component
+    InViewport.prototype.render = function render() {
+      var _props2 = this.props,
+        onEnterViewport = _props2.onEnterViewport,
+        onLeaveViewport = _props2.onLeaveViewport,
+        otherProps = _objectWithoutProperties(_props2, ['onEnterViewport', 'onLeaveViewport']);
+      // pass ref to class and innerRef for stateless component
 
 
-      var {
-        inViewport,
-        enterCount,
-        leaveCount
-      } = this.state;
-      var refProps = isStateless(TargetComponent) ? {
-        innerRef: this.setInnerRef
-      } : {
-        ref: this.setRef
-      };
-      return (// $FlowFixMe
-        _react.default.createElement(TargetComponent, _extends({}, otherProps, {
+      var _state = this.state,
+        inViewport = _state.inViewport,
+        enterCount = _state.enterCount,
+        leaveCount = _state.leaveCount;
+
+      var refProps = isStateless(TargetComponent) ? { innerRef: this.setInnerRef } : { ref: this.setRef };
+      return (
+        // $FlowFixMe
+        React.createElement(TargetComponent, _extends({}, otherProps, {
           inViewport: inViewport,
           enterCount: enterCount,
           leaveCount: leaveCount
         }, refProps))
       );
-    }
+    };
 
-  }
+    return InViewport;
+  }(Component);
 
-  return (0, _hoistNonReactStatics.default)(InViewport, TargetComponent);
+  return hoistNonReactStatic(InViewport, TargetComponent);
 }
 
-var _default = handleViewport;
-exports.default = _default;
+export default handleViewport;
