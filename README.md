@@ -40,17 +40,18 @@ Wrap your component with handleViewport HOC, you will receive `inViewport` props
 
 `handleViewport(Component, Options, Config)`
 
-| Params    | Type          | Description                                                                                                                        |
-|-----------|---------------|------------------------------------------------------------------------------------------------------------------------------------|
-| Component | React Element | Callback function for component enters viewport                                                                                    |
-| Options   | Object        | Option you want to pass to [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) |   |
-| Config    | Object        | Configs for HOC, see below |
+| Params       | Type            | Description                                                                                                                        |
+|--------------|-----------------|------------------------------------------------------------------------------------------------------------------------------------|
+| Component    | React Element   | Callback function for component enters viewport                                                                                    |
+| Options      | Object          | Option you want to pass to [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) |
+| Options.root | Node / Function | It should be a DOM node or a function returning the Node                                                                           |
+| Config       | Object          | Configs for HOC, see below                                                                                                         |
 
 ### Supported config
 
-| Params            | Type    | Default                                                                                                                            | Description                                  |
-|-------------------|---------|------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------|
-| disconnectOnLeave | boolean | fasle                                                                                                                              | disconnect intersection observer after leave |
+| Params            | Type    | Default | Description                                  |
+|-------------------|---------|---------|----------------------------------------------|
+| disconnectOnLeave | boolean | false   | disconnect intersection observer after leave |
 
 ### Props to the HOC component
 

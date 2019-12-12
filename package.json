@@ -1,12 +1,12 @@
 {
-  "name": "react-in-viewport",
-  "version": "0.0.38",
+  "name": "@rspective/react-in-viewport",
+  "version": "0.1.0",
   "description": "Track React component in viewport using Intersection Observer API",
   "author": "Roderick Hsiao <roderickhsiao@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/roderickhsiao/react-in-viewport.git"
+    "url": "https://github.com/rspective/react-in-viewport.git"
   },
   "keywords": [
     "react-in-viewport",

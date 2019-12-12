@@ -20,7 +20,7 @@ type State = {
 };
 
 type OptionType = {
-  root?: Node,
+  root?: Node | () => Node,
   rootMargin?: string,
   threshold?: number | Array<number>
 };
@@ -81,8 +81,9 @@ function handleViewport(
 
     initIntersectionObserver() {
       if (!this.observer) {
+        const root = typeof options.root === 'function' ? options.root() : options.root;
         // $FlowFixMe
-        this.observer = new IntersectionObserver(this.handleIntersection, options);
+        this.observer = new IntersectionObserver(this.handleIntersection, { ...options, root });
       }
     }
 
