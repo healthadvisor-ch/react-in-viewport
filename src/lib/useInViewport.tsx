@@ -80,7 +80,8 @@ const useInViewport = (
 
   function initIntersectionObserver({ observerRef }) {
     if (!observerRef) {
-      observer.current = new IntersectionObserver(handleIntersection, options);
+      const root = typeof options.root === 'function' ? options.root() : options.root;
+      observer.current = new IntersectionObserver(handleIntersection, { ...options, root });
       return observer.current;
     }
     return observerRef;

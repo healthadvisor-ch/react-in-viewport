@@ -35,6 +35,24 @@ For browsers not supporting the API, you will need to load a [polyfill](https://
 require('intersection-observer');
 ```
 
+### Difference with original react-in-viewport lib
+
+This fork adds possibility to define `IntersectionObserver`'s options' `root` prop to be a function, which returns a node shortly before creating
+new instance of `IntersectionObserver`. The reason behind is that if your root might disappear from DOM for any reason, current solution doesn't
+handle that and might happen that the observer doesn't react on changing viewport.
+
+Usage:
+
+```javascript
+import HandleViewport from 'react-in-viewport';
+
+...
+
+HandleViewport(MyComponent, {
+  root: () => document.getElementById('my-element'),
+});
+```
+
 ## Design
 
 The core logic is written using React Hooks. We provide two interfaces: you can use `handleViewport`, a higher order component (HOC) for class based components, or use hooks directly, for functional components.
@@ -48,11 +66,12 @@ When wrapping your component with `handleViewport` HOC, you will receive `inView
 
 `handleViewport` HOC accepts three params: `handleViewport(Component, Options, Config)`
 
-| Params    | Type          | Description                                                                                                                        |
-|-----------|---------------|------------------------------------------------------------------------------------------------------------------------------------|
-| Component | React Element | Callback function for when the component enters the viewport                                                                                    |
-| Options   | Object        | Options you want to pass to [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) |   |
-| Config    | Object        | Configs for HOC (see below) |
+| Params       | Type            | Description                                                                                                                         |
+|--------------|-----------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Component    | React Element   | Callback function for when the component enters the viewport                                                                        |
+| Options      | Object          | Options you want to pass to [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) |
+| Options.root | Node / Function | It should be a DOM node or a function returning the Node                                                                            |
+| Config       | Object          | Configs for HOC (see below)                                                                                                         |
 
 ### Supported config
 

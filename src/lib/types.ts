@@ -8,4 +8,5 @@ export type Props = {
   [key: string]: any;
 };
 
-export type Options = IntersectionObserverInit;
+export type Options = IntersectionObserverInit &
+{ root?: Document | Element | (() => Element) | null };
