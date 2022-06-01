@@ -1,6 +1,9 @@
 node_modules
 *.log
 .idea
-dist
 .out
 junit.xml
+dist/__tests__
+dist/*/__tests__
+dist/stories
+dist/*/stories
