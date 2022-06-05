@@ -1,6 +1,6 @@
 {
-  "name": "react-in-viewport",
-  "version": "1.0.0-alpha.28",
+  "name": "@healthadvisor/react-in-viewport",
+  "version": "1.0.0",
   "description": "Track React component in viewport using Intersection Observer API",
   "author": "Roderick Hsiao <roderickhsiao@gmail.com>",
   "license": "MIT",
@@ -29,6 +29,18 @@
     "testonly": "jest --config jest-config.js",
     "typings": "tsc"
   },
+  "files": [
+    "dist/index.js",
+    "dist/es/lib",
+    "dist/es/index.js",
+    "dist/lib",
+    "dist/next/lib",
+    "dist/next/index.js",
+    "dist/umd/lib",
+    "dist/umd/index.js",
+    "LICENSE",
+    "README.md"
+  ],
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
