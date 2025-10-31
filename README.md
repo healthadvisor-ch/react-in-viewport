@@ -1,3 +1,7 @@
+# Important!
+
+**This library is no longer used in HealthAdvisor**
+
 <p align="center">
   <h1>React In Viewport</h1>
   <a href="https://www.npmjs.org/package/react-in-viewport"><img src="https://img.shields.io/npm/v/react-in-viewport.svg?style=flat" alt="npm"></a>
